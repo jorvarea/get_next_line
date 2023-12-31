@@ -6,7 +6,7 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:12 by jorvarea          #+#    #+#             */
-/*   Updated: 2023/12/31 02:47:12 by jorvarea         ###   ########.fr       */
+/*   Updated: 2023/12/31 03:07:54 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define BUFFER_SIZE 33
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 33
+# endif
 # define FD_LIMIT 1024
 
 void	allocate_buffer_memory(char *buffer[FD_LIMIT], int fd, bool *ok);

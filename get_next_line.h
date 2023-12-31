@@ -6,7 +6,7 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:12 by jorvarea          #+#    #+#             */
-/*   Updated: 2023/12/31 01:51:40 by jorvarea         ###   ########.fr       */
+/*   Updated: 2023/12/31 02:17:24 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define FD_LIMIT 1024
 
 void	allocate_buffer_memory(char *buffer[FD_LIMIT], int fd, bool *ok);
-int		line_lenght(char *buffer_fd);
+int		line_length(char *buffer_fd);
 char	*reallocate_line_memory(char *line, int new_line_len);
 void	fill_line(char *buffer_fd, char *line);
 void	delete_buffer_line(char *buffer[FD_LIMIT], int fd);

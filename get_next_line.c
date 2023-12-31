@@ -6,7 +6,7 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:05 by jorvarea          #+#    #+#             */
-/*   Updated: 2023/12/31 01:42:21 by jorvarea         ###   ########.fr       */
+/*   Updated: 2023/12/31 02:19:10 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ char	*get_line(char *buffer_fd, bool *ok, bool *full_line)
 	int		i;
 
 	*full_line = false;
-	line_len = line_length(buffer_fd, full_line);
+	line_len = line_length(buffer_fd);
 	line = malloc(line_len * sizeof(char));
 	if (line == NULL)
-		ok = false;
+		*ok = false;
 	else
 	{
 		i = 0;
@@ -33,7 +33,7 @@ char	*get_line(char *buffer_fd, bool *ok, bool *full_line)
 		}
 		line[i] = '\0';
 		if (buffer_fd[i] == '\n')
-			full_line = true;
+			*full_line = true;
 	}
 	return (line);
 }
@@ -46,7 +46,6 @@ char	*get_next_line(int fd)
 	bool		full_line;
 	bool		ok;
 
-	line = NULL;
 	ok = true;
 	if (buffer[fd] == NULL)
 		allocate_buffer_memory(buffer, fd, &ok);
@@ -61,5 +60,7 @@ char	*get_next_line(int fd)
 		}
 		delete_buffer_line(buffer, fd);
 	}
+    if (!ok || line[0] == '\0')
+        line = NULL;
 	return (line);
 }

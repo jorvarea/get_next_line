@@ -1,5 +1,7 @@
 .DS_STORE
-a.out
+*.out
 *.o
 *.a
 .vscode
+main.c
+*.txt

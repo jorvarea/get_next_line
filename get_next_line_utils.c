@@ -6,7 +6,7 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:10 by jorvarea          #+#    #+#             */
-/*   Updated: 2023/12/31 01:43:58 by jorvarea         ###   ########.fr       */
+/*   Updated: 2023/12/31 02:18:17 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	allocate_buffer_memory(char *buffer[FD_LIMIT], int fd, bool *ok)
 		*ok = false;
 }
 
-int	line_lenght(char *buffer_fd)
+int	line_length(char *buffer_fd)
 {
 	int	i;
 
@@ -52,8 +52,8 @@ void	fill_line(char *buffer_fd, char *line)
 	int		i;
 	int		j;
 
-	new_line_len = line_lenght(line);
-	new_line_len += line_lenght(buffer_fd);
+	new_line_len = line_length(line);
+	new_line_len += line_length(buffer_fd);
 	new_line = reallocate_line_memory(line, new_line_len);
 	i = 0;
 	while (line[i] != '\0')

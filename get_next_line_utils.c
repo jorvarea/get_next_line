@@ -6,7 +6,7 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:10 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/01 22:26:40 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/02 00:49:08 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	delete_buffer_line(char *buffer[FD_LIMIT], int fd)
 	i = 0;
 	while (buffer[fd][i] != '\n' && buffer[fd][i] != '\0')
 		i++;
-	if (buffer[fd][i] == '\n') 
+	if (buffer[fd][i] == '\n')
 		buffer[fd] = &buffer[fd][i + 1];
 	else
 		buffer[fd] = &buffer[fd][i];

@@ -6,7 +6,7 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:12 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/01 23:10:11 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/02 00:49:02 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,6 @@
 # ifndef FD_LIMIT
 #  define FD_LIMIT 1024
 # endif
-
-struct Buffer{
-    char *start;
-    char *current;    
-};
 
 void	allocate_buffer_memory(char *buffer[FD_LIMIT], int fd, bool *ok);
 int		line_length(char *buffer_fd);

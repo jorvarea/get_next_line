@@ -6,19 +6,18 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:10 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/02 02:06:44 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/02 03:15:38 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	allocate_buffer_memory(char *buffer[FD_LIMIT], int fd, bool *ok)
+void	allocate_buffer_memory(char *buffer[FD_LIMIT], int fd, t_Flags *flags)
 {
 	buffer[fd] = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (buffer[fd] != NULL)
+	flags->ok = (buffer[fd] != NULL);
+	if (flags->ok)
 		buffer[fd][0] = '\0';
-	else
-		*ok = false;
 }
 
 int	line_length(const char *buffer_fd)
@@ -33,15 +32,14 @@ int	line_length(const char *buffer_fd)
 	return (i);
 }
 
-char	*reallocate_line_memory(char *line, int new_line_len, bool *ok)
+char	*reallocate_line_memory(char *line, int new_line_len, t_Flags *flags)
 {
 	char	*new_line;
 	int		i;
 
 	new_line = malloc((new_line_len + 1) * sizeof(char));
-	if (new_line == NULL)
-		*ok = false;
-	else
+	flags->ok = (new_line != NULL);
+	if (flags->ok)
 	{
 		i = 0;
 		while (line[i] != '\0')

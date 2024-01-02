@@ -6,24 +6,24 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:05 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/02 02:17:37 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/02 03:15:28 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	read_file(char *buffer_fd, int fd, bool *ok)
+void	read_file(char *buffer_fd, int fd, t_Flags *flags)
 {
 	int	bytes_read;
 
 	bytes_read = read(fd, buffer_fd, BUFFER_SIZE);
-	if (bytes_read >= 0)
+	flags->ok = bytes_read >= 0;
+	flags->eof = bytes_read == 0;
+	if (flags->ok)
 		buffer_fd[bytes_read] = '\0';
-	if (bytes_read <= 0)
-		*ok = false;
 }
 
-char	*fill_line(const char *buffer_fd, char *line, bool *ok, bool *full_line)
+char	*fill_line(const char *buffer_fd, char *line, t_Flags *flags)
 {
 	int		line_len;
 	int		new_line_len;
@@ -33,8 +33,8 @@ char	*fill_line(const char *buffer_fd, char *line, bool *ok, bool *full_line)
 
 	line_len = line_length(line);
 	new_line_len = line_len + line_length(buffer_fd);
-	new_line = reallocate_line_memory(line, new_line_len, ok);
-	if (*ok)
+	new_line = reallocate_line_memory(line, new_line_len, flags);
+	if (flags->ok)
 	{
 		i = line_len;
 		j = 0;
@@ -42,12 +42,12 @@ char	*fill_line(const char *buffer_fd, char *line, bool *ok, bool *full_line)
 			new_line[i++] = buffer_fd[j++];
 		new_line[i] = '\0';
 		if (new_line[i - 1] == '\n')
-			*full_line = true;
+			flags->full_line = true;
 	}
 	return (new_line);
 }
 
-char	*get_line(const char *buffer_fd, bool *ok, bool *full_line)
+char	*get_line(const char *buffer_fd, t_Flags *flags)
 {
 	char	*line;
 	int		line_len;
@@ -55,9 +55,8 @@ char	*get_line(const char *buffer_fd, bool *ok, bool *full_line)
 
 	line_len = line_length(buffer_fd);
 	line = malloc(line_len * sizeof(char));
-	if (line == NULL)
-		*ok = false;
-	else
+	flags->ok = line != NULL;
+	if (flags->ok)
 	{
 		i = 0;
 		while (i < line_len)
@@ -67,7 +66,7 @@ char	*get_line(const char *buffer_fd, bool *ok, bool *full_line)
 		}
 		line[i] = '\0';
 		if (line[i - 1] == '\n')
-			*full_line = true;
+			flags->full_line = true;
 	}
 	return (line);
 }
@@ -76,24 +75,25 @@ char	*get_next_line(int fd)
 {
 	static char	*buffer[FD_LIMIT];
 	char		*line;
-	bool		full_line;
-	bool		ok;
+	t_Flags		flags;
 
-	ok = true;
-	full_line = false;
-	if (buffer[fd] == NULL)
-		allocate_buffer_memory(buffer, fd, &ok);
-	if (ok)
+	flags.ok = (fd >= 0) && (fd < FD_LIMIT);
+	flags.full_line = false;
+	flags.eof = false;
+	if (flags.ok && buffer[fd] == NULL)
+		allocate_buffer_memory(buffer, fd, &flags);
+	if (flags.ok)
 	{
-		line = get_line(buffer[fd], &ok, &full_line);
-		while (ok && !full_line)
+		line = get_line(buffer[fd], &flags);
+		while (flags.ok && !flags.full_line && !flags.eof)
 		{
-			read_file(buffer[fd], fd, &ok);
-			line = fill_line(buffer[fd], line, &ok, &full_line);
+			read_file(buffer[fd], fd, &flags);
+			if (flags.ok)
+				line = fill_line(buffer[fd], line, &flags);
 		}
 		shift_buffer(buffer, fd);
 	}
-	if (!ok)
+	if (!flags.ok)
 		line = NULL;
 	return (line);
 }

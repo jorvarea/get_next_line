@@ -6,7 +6,7 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:10 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/02 01:41:37 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/02 02:06:44 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*reallocate_line_memory(char *line, int new_line_len, bool *ok)
 	char	*new_line;
 	int		i;
 
-	new_line = malloc(new_line_len * sizeof(char));
+	new_line = malloc((new_line_len + 1) * sizeof(char));
 	if (new_line == NULL)
 		*ok = false;
 	else

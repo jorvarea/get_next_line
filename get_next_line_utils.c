@@ -6,7 +6,7 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:10 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/02 00:49:08 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/02 01:13:13 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,17 @@ char	*reallocate_line_memory(char *line, int new_line_len, bool *ok)
 	return (new_line);
 }
 
-void	delete_buffer_line(char *buffer[FD_LIMIT], int fd)
+void	shift_buffer(char *buffer[FD_LIMIT], int fd)
 {
+	int	line_len;
 	int	i;
 
-	i = 0;
-	while (buffer[fd][i] != '\n' && buffer[fd][i] != '\0')
+	line_len = line_length(buffer[fd]);
+	i = line_len;
+	while (buffer[fd][i] != '\0')
+	{
+		buffer[fd][i - line_len] = buffer[fd][i];
 		i++;
-	if (buffer[fd][i] == '\n')
-		buffer[fd] = &buffer[fd][i + 1];
-	else
-		buffer[fd] = &buffer[fd][i];
+	}
+	buffer[fd][i - line_len] = '\0';
 }

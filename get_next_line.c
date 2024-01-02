@@ -6,7 +6,7 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:05 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/02 00:57:00 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/02 01:11:05 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*get_next_line(int fd)
 			buffer[fd][bytes_read] = '\0';
 			line = fill_line(buffer[fd], line, &full_line, &ok);
 		}
-		delete_buffer_line(buffer, fd);
+		shift_buffer(buffer, fd);
 	}
 	if (!ok || line[0] == '\0')
 		line = NULL;

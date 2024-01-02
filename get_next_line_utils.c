@@ -6,7 +6,7 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:10 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/02 01:13:13 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/02 01:41:37 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 void	allocate_buffer_memory(char *buffer[FD_LIMIT], int fd, bool *ok)
 {
 	buffer[fd] = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	buffer[fd][0] = '\0';
-	if (buffer[fd] == NULL)
+	if (buffer[fd] != NULL)
+		buffer[fd][0] = '\0';
+	else
 		*ok = false;
 }
 
-int	line_length(char *buffer_fd)
+int	line_length(const char *buffer_fd)
 {
 	int	i;
 
@@ -48,6 +49,7 @@ char	*reallocate_line_memory(char *line, int new_line_len, bool *ok)
 			new_line[i] = line[i];
 			i++;
 		}
+		new_line[i] = '\0';
 		free(line);
 	}
 	return (new_line);

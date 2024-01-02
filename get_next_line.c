@@ -6,24 +6,29 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:05 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/02 03:15:28 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/02 14:45:40 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	read_file(char *buffer_fd, int fd, t_Flags *flags)
+void	read_file(char *buffer[FD_LIMIT], int fd, t_Flags *flags)
 {
 	int	bytes_read;
 
-	bytes_read = read(fd, buffer_fd, BUFFER_SIZE);
+	bytes_read = read(fd, buffer[fd], BUFFER_SIZE);
 	flags->ok = bytes_read >= 0;
 	flags->eof = bytes_read == 0;
 	if (flags->ok)
-		buffer_fd[bytes_read] = '\0';
+		buffer[fd][bytes_read] = '\0';
+	if (flags->eof && buffer[fd] != NULL)
+	{
+		free(buffer[fd]);
+		buffer[fd] = NULL;
+	}
 }
 
-char	*fill_line(const char *buffer_fd, char *line, t_Flags *flags)
+char	*fill_line(char *buffer_fd, char *line, t_Flags *flags)
 {
 	int		line_len;
 	int		new_line_len;
@@ -47,7 +52,7 @@ char	*fill_line(const char *buffer_fd, char *line, t_Flags *flags)
 	return (new_line);
 }
 
-char	*get_line(const char *buffer_fd, t_Flags *flags)
+char	*get_line(char *buffer_fd, t_Flags *flags)
 {
 	char	*line;
 	int		line_len;
@@ -87,11 +92,12 @@ char	*get_next_line(int fd)
 		line = get_line(buffer[fd], &flags);
 		while (flags.ok && !flags.full_line && !flags.eof)
 		{
-			read_file(buffer[fd], fd, &flags);
-			if (flags.ok)
+			read_file(buffer, fd, &flags);
+			if (flags.ok && !flags.eof)
 				line = fill_line(buffer[fd], line, &flags);
 		}
-		shift_buffer(buffer, fd);
+		if (!flags.eof)
+			shift_buffer(buffer, fd);
 	}
 	if (!flags.ok)
 		line = NULL;

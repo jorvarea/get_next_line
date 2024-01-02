@@ -6,7 +6,7 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:10 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/02 03:15:38 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/02 14:42:09 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	allocate_buffer_memory(char *buffer[FD_LIMIT], int fd, t_Flags *flags)
 		buffer[fd][0] = '\0';
 }
 
-int	line_length(const char *buffer_fd)
+int	line_length(char *buffer_fd)
 {
 	int	i;
 

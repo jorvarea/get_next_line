@@ -6,11 +6,22 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:05 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/02 14:45:40 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/02 16:53:37 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*handle_errors(char *line, t_Flags *flags)
+{
+	if (!flags->ok || line[0] == '\0')
+	{
+		if (line != NULL && line[0] == '\0')
+			free(line);
+		line = NULL;
+	}
+	return (line);
+}
 
 void	read_file(char *buffer[FD_LIMIT], int fd, t_Flags *flags)
 {
@@ -21,7 +32,7 @@ void	read_file(char *buffer[FD_LIMIT], int fd, t_Flags *flags)
 	flags->eof = bytes_read == 0;
 	if (flags->ok)
 		buffer[fd][bytes_read] = '\0';
-	if (flags->eof && buffer[fd] != NULL)
+	if ((flags->eof || !flags->ok) && buffer[fd] != NULL)
 	{
 		free(buffer[fd]);
 		buffer[fd] = NULL;
@@ -83,6 +94,7 @@ char	*get_next_line(int fd)
 	t_Flags		flags;
 
 	flags.ok = (fd >= 0) && (fd < FD_LIMIT);
+	line = NULL;
 	flags.full_line = false;
 	flags.eof = false;
 	if (flags.ok && buffer[fd] == NULL)
@@ -96,10 +108,9 @@ char	*get_next_line(int fd)
 			if (flags.ok && !flags.eof)
 				line = fill_line(buffer[fd], line, &flags);
 		}
-		if (!flags.eof)
+		if (flags.ok && !flags.eof)
 			shift_buffer(buffer, fd);
 	}
-	if (!flags.ok)
-		line = NULL;
+	line = handle_errors(line, &flags);
 	return (line);
 }

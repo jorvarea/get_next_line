@@ -6,7 +6,7 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:05 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/02 16:53:37 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/04 14:50:16 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*handle_errors(char *line, t_Flags *flags)
 {
 	if (!flags->ok || line[0] == '\0')
 	{
-		if (line != NULL && line[0] == '\0')
+		if (line != NULL)
 			free(line);
 		line = NULL;
 	}
@@ -28,7 +28,8 @@ void	read_file(char *buffer[FD_LIMIT], int fd, t_Flags *flags)
 	int	bytes_read;
 
 	bytes_read = read(fd, buffer[fd], BUFFER_SIZE);
-	flags->ok = bytes_read >= 0;
+	if (bytes_read < 0)
+		flags->ok = false;
 	flags->eof = bytes_read == 0;
 	if (flags->ok)
 		buffer[fd][bytes_read] = '\0';
@@ -63,14 +64,14 @@ char	*fill_line(char *buffer_fd, char *line, t_Flags *flags)
 	return (new_line);
 }
 
-char	*get_line(char *buffer_fd, t_Flags *flags)
+char	*ft_get_line(char *buffer_fd, t_Flags *flags)
 {
 	char	*line;
 	int		line_len;
 	int		i;
 
 	line_len = line_length(buffer_fd);
-	line = malloc(line_len * sizeof(char));
+	line = malloc((line_len + 1) * sizeof(char));
 	flags->ok = line != NULL;
 	if (flags->ok)
 	{
@@ -81,7 +82,7 @@ char	*get_line(char *buffer_fd, t_Flags *flags)
 			i++;
 		}
 		line[i] = '\0';
-		if (line[i - 1] == '\n')
+		if (line_len > 0 && line[i - 1] == '\n')
 			flags->full_line = true;
 	}
 	return (line);
@@ -101,7 +102,7 @@ char	*get_next_line(int fd)
 		allocate_buffer_memory(buffer, fd, &flags);
 	if (flags.ok)
 	{
-		line = get_line(buffer[fd], &flags);
+		line = ft_get_line(buffer[fd], &flags);
 		while (flags.ok && !flags.full_line && !flags.eof)
 		{
 			read_file(buffer, fd, &flags);

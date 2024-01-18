@@ -6,7 +6,7 @@
 #    By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 01:24:03 by jorvarea          #+#    #+#              #
-#    Updated: 2024/01/18 01:36:15 by jorvarea         ###   ########.fr        #
+#    Updated: 2024/01/18 14:07:32 by jorvarea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJECT_FILES		= $(SOURCE_FILES:%.c=$(OBJECT_DIR)/%.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJECT_FILES) get_next_line.h
+$(NAME): $(OBJECT_FILES) get_next_line_utils.h
 	@ar -rcs $(NAME) $(OBJECT_FILES)
 
 $(OBJECT_DIR)/%.o: %.c

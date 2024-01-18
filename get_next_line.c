@@ -6,13 +6,13 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:05 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/04 14:50:16 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:06:48 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_utils.h"
 
-char	*handle_errors(char *line, t_Flags *flags)
+static char	*handle_errors(char *line, t_Flags *flags)
 {
 	if (!flags->ok || line[0] == '\0')
 	{
@@ -23,7 +23,7 @@ char	*handle_errors(char *line, t_Flags *flags)
 	return (line);
 }
 
-void	read_file(char *buffer[FD_LIMIT], int fd, t_Flags *flags)
+static void	read_file(char *buffer[FD_LIMIT], int fd, t_Flags *flags)
 {
 	int	bytes_read;
 
@@ -40,7 +40,7 @@ void	read_file(char *buffer[FD_LIMIT], int fd, t_Flags *flags)
 	}
 }
 
-char	*fill_line(char *buffer_fd, char *line, t_Flags *flags)
+static char	*fill_line(char *buffer_fd, char *line, t_Flags *flags)
 {
 	int		line_len;
 	int		new_line_len;
@@ -64,7 +64,7 @@ char	*fill_line(char *buffer_fd, char *line, t_Flags *flags)
 	return (new_line);
 }
 
-char	*ft_get_line(char *buffer_fd, t_Flags *flags)
+static char	*ft_get_line(char *buffer_fd, t_Flags *flags)
 {
 	char	*line;
 	int		line_len;

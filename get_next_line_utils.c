@@ -6,11 +6,11 @@
 /*   By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 13:35:10 by jorvarea          #+#    #+#             */
-/*   Updated: 2024/01/02 14:42:09 by jorvarea         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:07:15 by jorvarea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_utils.h"
 
 void	allocate_buffer_memory(char *buffer[FD_LIMIT], int fd, t_Flags *flags)
 {

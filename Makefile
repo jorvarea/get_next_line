@@ -6,14 +6,14 @@
 #    By: jorvarea <jorvarea@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 01:24:03 by jorvarea          #+#    #+#              #
-#    Updated: 2024/01/18 14:07:32 by jorvarea         ###   ########.fr        #
+#    Updated: 2024/02/03 18:08:55 by jorvarea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME				= get_next_line.a
 CC					= gcc
 CFLAGS				= -Wall -Werror -Wextra
-SOURCE_FILES   		= $(wildcard *.c)
+SOURCE_FILES   		= get_next_line.c get_next_line_utils.c
 OBJECT_DIR 			= obj
 OBJECT_FILES		= $(SOURCE_FILES:%.c=$(OBJECT_DIR)/%.o)
 
